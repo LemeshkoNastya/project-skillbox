@@ -21,10 +21,28 @@ module.exports = {
         filename: 'index.js'
     },
     module: {
-        rules: [{
-            test: /\.[tj]sx?/,
-            use: ['ts-loader']
-        }]
+        rules: [
+            {
+                test: /\.[tj]sx?$/,
+                use: ['ts-loader']
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    'style-loader', 
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: {
+                                mode: 'local',
+                                localIdentName: '[name]__[local]--[hash:base64:5]'
+                            }
+                        }
+                    },
+                    'sass-loader'
+                ]
+            }
+        ]
     },
     plugins: [
         new HTMLWebpackPlugin({template: path.resolve(__dirname, 'index.html')})
@@ -34,5 +52,5 @@ module.exports = {
         open: true,
         hot: IS_DEV
     },
-    devTool: setupDevtool()
+    devtool: setupDevtool()
 };
